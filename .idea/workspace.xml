@@ -4,7 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a2001673-8781-4ef9-8cb2-08661c87ccfc" name="Changes" comment="commit test">
+    <list default="true" id="a2001673-8781-4ef9-8cb2-08661c87ccfc" name="Changes" comment="add data structure algorithm">
+      <change afterPath="$PROJECT_DIR$/src/boj/math/Boj_15965.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/boj/math/Boj_1963.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/boj/math/Boj_21919.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/boj/math/Boj_2960.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/boj/math/Boj_3896.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/boj/math/Boj_6588.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/boj/math/Boj_9020.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/boj/str/Boj_5430.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -28,12 +36,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "C:/Users/user/Desktop/Algorithm/src/boj/math"
   }
-}</component>
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\user\Desktop\Algorithm\src\boj\data_structure" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="boj.str" />
+    </key>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -59,12 +76,21 @@
       <option name="project" value="LOCAL" />
       <updated>1706625096655</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="add data structure algorithm">
+      <option name="closed" value="true" />
+      <created>1706681137123</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1706681137123</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="initial commit" />
     <MESSAGE value="commit test" />
-    <option name="LAST_COMMIT_MESSAGE" value="commit test" />
+    <MESSAGE value="add data structure algorithm" />
+    <option name="LAST_COMMIT_MESSAGE" value="add data structure algorithm" />
   </component>
 </project>
