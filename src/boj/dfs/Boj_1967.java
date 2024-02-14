@@ -65,7 +65,6 @@ public class Boj_1967 {
     public static void dfs(int node) {
         visited[node] = true;
         for (Edge edge : graph.get(node)) {
-
             if (!visited[edge.vertex]) {
                 max += edge.weight;
                 dfs(edge.vertex);
