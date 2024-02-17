@@ -23,7 +23,6 @@ public class Boj_3584 {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-
         int T = Integer.parseInt(br.readLine());
         for (int test_case = 0; test_case < T; test_case++) {
             N = Integer.parseInt(br.readLine());
