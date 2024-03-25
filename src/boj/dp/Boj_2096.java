@@ -8,10 +8,10 @@ import java.util.StringTokenizer;
 
 /*
 내려가기 - 골5
-1) 틀렸습니다.
+1) 틀렸습니다. - 67분 소요
 ==> dp에 현재 행 인덱스의 값 + 이전 행의 위 옆 인덱스 값을 비교한 값
     이 아닌 이전 행 인덱스 값 + 현재 행 인덱스 값을 더하고 있었음
-2) 통과
+2) 통과 - +36분 소요
  */
 public class Boj_2096 {
     static StringBuilder sb = new StringBuilder();
