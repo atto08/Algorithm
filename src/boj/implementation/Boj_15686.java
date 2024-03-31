@@ -16,7 +16,7 @@ import java.util.StringTokenizer;
 
 2) 시간 초과
 소요 시간: +36분
-원인: 쓸데없이 방문한 모든 치킨 집을 방문하도록 해서 시간초과 발생
+원인: 쓸데없이 방문한 모든 치킨 집을 방문함(중복순열 체크 X) >> 시간초과 발생
 해결: dfs 함수에서 선택된 치킨 집의 인덱스를 파라미터로 전달하여 해당 치킨 집 다음부터 시작하도록 수정
 >> 중복 계산을 피하고 시간 복잡도 감소
  */
@@ -76,6 +76,7 @@ public class Boj_15686 {
 
     private static void dfs(int node, int depth) {
 
+        System.out.println("node: " + node + " depth: " + depth);
         if (depth == M) {
             // 치킨집 M개만 유지
             for (int i = 1; i <= chickenCnt; i++) {
@@ -83,7 +84,7 @@ public class Boj_15686 {
                     map[chicken[i][0]][chicken[i][1]] = 0;
                 }
             }
-            // 여기서 home기준 가장 가까운 치킨 집 찾기 bfs?
+            // M개의 치킨 집에서 가까운 집들을 찾아 치킨 거리의 최소 값 구하기
             mapVisited = new boolean[N + 1][N + 1];
             bfs();
             // 다시 치킨 집 원 위치
@@ -95,6 +96,7 @@ public class Boj_15686 {
             return;
         }
 
+        // 중복 순열 제거를 위해 인덱스 node부터 탐색
         for (int i = node; i <= chickenCnt; i++) {
             if (!visited[i]) {
                 visited[i] = true;
@@ -105,7 +107,7 @@ public class Boj_15686 {
     }
 
 
-    // 모든 집에서 가장 가까운 치킨집의 거리 구하기 >> 치킨 거리 구하기
+    // 치킨 거리 구하기
     private static void bfs() {
 
         int distanceMin = 0;
