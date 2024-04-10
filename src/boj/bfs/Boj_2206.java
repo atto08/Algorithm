@@ -5,86 +5,96 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
 
+/*
+벽부수고 이동하기 - 골3
+[재풀이] 이전에 제대로 이해하지 못해서 다시 풂
+소요 시간: 1시간 초과
+point 벽을 부수고 이동한 경우와 그렇지 않은 경우 구분짓기
+
+블로그 & 질문 게시판 참고
+ */
 public class Boj_2206 {
     static int N, M;
     static boolean[][][] visited;
-    static int[][] depth;
-    static ArrayList<ArrayList<Integer>> map;
+    static int[][] map;
     static int[] dx = {-1, 1, 0, 0};
     static int[] dy = {0, 0, -1, 1};
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
         StringTokenizer st = new StringTokenizer(br.readLine());
+
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
+        map = new int[N + 1][M + 1];
 
-        map = new ArrayList<>();
-        visited = new boolean[N][M][2];
-        depth = new int[N][M];
-
-
-        for (int i = 0; i < N; i++) {
-            map.add(new ArrayList<>());
-            Arrays.fill(depth[i], -1);
-
-            char[] cArr = br.readLine().toCharArray();
-            for (int j = 0; j < M; j++) {
-                if (cArr[j] == '0') {
-                    map.get(i).add(0);
-                } else {
-                    map.get(i).add(1);
-                }
+        for (int i = 1; i <= N; i++) {
+            String[] arr = br.readLine().split("");
+            for (int j = 1; j <= M; j++) {
+                map[i][j] = Integer.parseInt(arr[j - 1]);
             }
         }
-
         bfs();
-
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < M; j++) {
-                System.out.print(depth[i][j] + " | ");
-            }
-            System.out.print("\n");
-        }
-
-        System.out.println(depth[N - 1][M - 1]);
-        br.close();
     }
 
-    public static void bfs() {
-        Queue<int[]> q = new LinkedList<>();
-        q.offer(new int[]{0, 0, 0});
-        visited[0][0][0] = visited[0][0][1] = true;
-        depth[0][0] = 1;
+    private static void bfs() {
+        Queue<Edge> queue = new LinkedList<>();
+        queue.offer(new Edge(1, 1, 1, false));
+        visited = new boolean[N + 1][M + 1][2];
 
-        while (!q.isEmpty()) {
-            int[] xy = q.poll();
-            int x = xy[0];
-            int y = xy[1];
-            int wall = xy[2];
+        while (!queue.isEmpty()) {
+            Edge e = queue.poll();
+            int x = e.x, y = e.y;
+            // 도착지에 도착하면
+            if (x == N && y == M) {
+                System.out.println(e.dist);
+                return;
+            }
 
             for (int i = 0; i < 4; i++) {
-                int nextX = x + dx[i];
-                int nextY = y + dy[i];
+                int nx = x + dx[i];
+                int ny = y + dy[i];
 
-                if (nextX < 0 || nextY < 0 || nextX >= N || nextY >= M) {
+                if (nx < 1 || ny < 1 || nx > N || ny > M) {
                     continue;
                 }
-
-                if (map.get(nextX).get(nextY) == 1 && wall == 0 && !visited[nextX][nextY][wall + 1]) {
-                    visited[nextX][nextY][wall + 1] = true;
-                    depth[nextX][nextY] = depth[x][y] + 1;
-                    q.offer(new int[] { nextX,nextY,wall+1});
+                // 벽이 아닐때
+                if (map[nx][ny] == 0) {
+                    // 벽 부순적 없으면서 방문한 적 없으면 이동
+                    if (!e.crash && !visited[nx][ny][0]) {
+                        queue.offer(new Edge(nx, ny, e.dist + 1, false));
+                        visited[nx][ny][0] = true;
+                    }
+                    // 벽 부수고 방문한적 없으면 이동
+                    else if (e.crash && !visited[nx][ny][1]) {
+                        queue.offer(new Edge(nx, ny, e.dist + 1, true));
+                        visited[nx][ny][1] = true;
+                    }
                 }
-
-                else if (map.get(nextX).get(nextY) != 1 && visited[nextX][nextY][wall]){
-                    visited[nextX][nextY][wall] = true;
-                    depth[nextX][nextY] = depth[x][y] + 1;
-                    q.offer(new int[] { nextX,nextY,wall});
+                // 벽일 때
+                else if (map[nx][ny] == 1) {
+                    // 벽을 부순적 없으면 부수고 이동
+                    if (!e.crash) {
+                        queue.offer(new Edge(nx, ny, e.dist + 1, true));
+                        visited[nx][ny][1] = true;
+                    }
+                    //부순적 있다면 X
                 }
-
             }
+        }
+        // 도착지에 도달할 수 없다면
+        System.out.println(-1);
+    }
+
+    static class Edge {
+        int x, y, dist;
+        boolean crash;
+
+        private Edge(int x, int y, int dist, boolean crash) {
+            this.x = x;
+            this.y = y;
+            this.dist = dist;
+            this.crash = crash;
         }
     }
 }
