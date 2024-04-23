@@ -10,7 +10,8 @@ Ladder - D4
 1) 2시간이 넘운 이유
 1. 방문 체크를 제대로 하지않았음
 2. y값의 인덱스가 0 또는 99를 초과했을 때의 조건문에서 y값을 변수로 매번 지정하지 않고 위에 += 연산을 사용해 값이 변경되는 것을 놓침
->> 매번 변동하는 y값을 변수로 지정함 >> 통과
+원인 >> y값이 넘어가는지 확인하기 전에 이미 변경됨
+해결 >> 매번 변동하는 y값을 변수로 지정함 + 좌우로 이동 가능할때의 while 문 수정  >> 통과
  */
 public class Swea_1210 {
     static int[][] ladder;
@@ -18,7 +19,7 @@ public class Swea_1210 {
     static int[] lr = {-1, 1};
     static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-    public static void main(String args[]) throws Exception {
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         StringTokenizer st;
