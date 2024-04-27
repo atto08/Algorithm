@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.LinkedList;
 import java.util.Queue;
 /*
+미로1 - D4
 소요 시간: 43분
 <소요 시간이 더 걸린 이유>
 1. 단순 미로 찾기(bfs) 문제로 인식하고 너무 편하게 접근함
