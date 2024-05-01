@@ -44,11 +44,7 @@ public class Swea_1859 {
             int[] dp = new int[N];
             dp[N - 1] = price[N - 1];
             for (int i = N - 2; i >= 0; i--) {
-                if (price[i] > dp[i + 1]) {
-                    dp[i] = price[i];
-                } else {
-                    dp[i] = dp[i + 1];
-                }
+                dp[i] = Math.max(price[i], dp[i + 1]);
             }
 
             for (int i = 0; i < N; i++) {
