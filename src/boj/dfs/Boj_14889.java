@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
+
 /*
 스타트와 링크 - 실1
 소요 시간: 60분
@@ -33,11 +34,10 @@ public class Boj_14889 {
             }
         }
 
-        for (int i = 1; i <= N / 2; i++) {
-            visited = new boolean[N + 1];
-            visited[i] = true;
-            dfs(i, 1);
-        }
+        visited = new boolean[N + 1];
+        visited[1] = true;
+        dfs(1, 1);
+
 
         // 결과적으로 스타트 팀과 링크 팀 능력치 차이의 최솟값 출력
         System.out.println(result);
