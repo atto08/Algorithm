@@ -1,6 +1,8 @@
 package boj.dfs;
+
 import java.io.*;
 import java.util.StringTokenizer;
+
 /*
  연산자 끼워넣기 - 실1
  소요 시간: 72분
@@ -16,7 +18,6 @@ public class Boj_14888 {
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
         N = Integer.parseInt(br.readLine());
 
         A = new int[N];
@@ -43,23 +44,21 @@ public class Boj_14888 {
         for (int i = 0; i < N - 1; i++) { // 완전탐색
             visited = new boolean[N - 1];
             visited[i] = true;
-            dfs(i, 0, new StringBuilder().append(operator[i]));
+            dfs(0, new StringBuilder().append(operator[i]));
         }
 
         System.out.println(max + "\n" + min);
     }
 
-    private static void dfs(int node, int depth, StringBuilder sb) {
+    private static void dfs(int depth, StringBuilder sb) {
         if (depth == N - 2) {
             int number = calculate(sb);
             if (number > max) {
                 max = number;
             }
-
             if (number < min) {
                 min = number;
             }
-
             return;
         }
 
@@ -67,7 +66,7 @@ public class Boj_14888 {
             if (!visited[i]) {
                 visited[i] = true;
                 sb.append(operator[i]);
-                dfs(i, depth + 1, sb);
+                dfs(depth + 1, sb);
                 visited[i] = false; // 백트래킹
                 sb.delete(sb.length() - 1, sb.length());
             }
@@ -78,7 +77,6 @@ public class Boj_14888 {
         String[] cArr = sb.toString().split("");
 
         int num = A[0];
-
         for (int i = 0; i < N - 1; i++) {
             int idx = Integer.parseInt(cArr[i]);
             if (idx == 0) {
@@ -94,4 +92,3 @@ public class Boj_14888 {
         return num;
     }
 }
-
