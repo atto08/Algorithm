@@ -6,7 +6,77 @@ import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
+/*
+미로 탐색 - 실1
+복습 - 재풀이
+소요 시간: 20분
+//풀이 2
+public class Solution {
+	static int N, M;
+	static int[][] map;
+	static boolean[][] visited;
+	static int[] dx = { -1, 1, 0, 0 }, dy = { 0, 0, -1, 1 };
 
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		N = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
+
+		map = new int[N + 1][M + 1];
+		visited = new boolean[N + 1][M + 1];
+		for (int i = 1; i <= N; i++) {
+			char[] c = br.readLine().toCharArray();
+			for (int j = 1; j <= M; j++) {
+				map[i][j] = c[j - 1] - '0';
+			}
+		}
+		bfs();
+	}
+
+	private static void bfs() {
+		Queue<XY> q = new LinkedList<>();
+		q.offer(new XY(1, 1, 1));
+		visited[1][1] = true;
+
+		while (true) {
+			XY now = q.poll();
+
+			if (now.x == N && now.y == M) {
+				System.out.println(now.m);
+				break;
+			}
+
+			for (int i = 0; i < 4; i++) {
+				int nx = now.x + dx[i];
+				int ny = now.y + dy[i];
+
+				if (nx < 1 || ny < 1 || nx > N || ny > M) {
+					continue;
+				}
+
+				if (!visited[nx][ny] && map[nx][ny] == 1) {
+					visited[nx][ny] = true;
+					q.offer(new XY(nx, ny, now.m + 1));
+				}
+			}
+		}
+	}
+
+	static class XY {
+		int x, y, m;
+
+		private XY(int x, int y, int m) {
+			this.x = x;
+			this.y = y;
+			this.m = m;
+		}
+	}
+}
+
+ */
+// 풀이 1(이전풀이)
 public class Boj_2178 {
     static int N, M;
     static int[][] maze, depth;
