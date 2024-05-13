@@ -3,7 +3,7 @@ package boj.bfs;
 import java.io.*;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.StringTokenizer;;
+import java.util.StringTokenizer;
 /*
 파이프 옮기기1 - 골5
 소요 시간: 80분 초과
