@@ -35,10 +35,12 @@ public class Boj_17070 {
                 map[i][j] = Integer.parseInt(st.nextToken());
             }
         }
-        // 입력 받기 끝
 
         result = 0;
-        bfs();
+        if(map[N][N] != 1){
+            bfs();
+        }
+        System.out.println(result);
     }
 
     static class Pipe {
@@ -59,10 +61,10 @@ public class Boj_17070 {
         Queue<Pipe> q = new LinkedList<>();
         q.offer(new Pipe(1, 1, 1, 2, 0)); // 시작점에서 도착점에 걸치는 경우를 찾는 방식
 
-        while (!q.isEmpty()) { // 어차피 인덱스를 넘어감 || 나머지 5방향은 시도를 안하기 때문에.
+        while (!q.isEmpty()) {
             Pipe now = q.poll();
 
-            if (now.r2 == N && now.c2 == N) { // 또 다른 경우의 수가 있을 수 있기 때문에 break 하면안됨
+            if (now.r2 == N && now.c2 == N) {
                 result++;
             }
 
@@ -82,13 +84,13 @@ public class Boj_17070 {
                                 q.offer(new Pipe(now.r2, now.c2, nr, nc, 1));
                             }
                         }
-                    } else { // 가로방향으로 가려면 한방향만 확인해주면 됨
+                    } else { // 가로방향 한방향 확인
                         if (map[nr][nc] == 0) {
                             q.offer(new Pipe(now.r2, now.c2, nr, nc, 0));
                         }
                     }
                 }
-            } else if (now.dir == 1) {
+            } else if (now.dir == 1) { // 파이프 방향 = 대각선 상태
                 for (int i = 0; i < 3; i++) {
                     int nr = now.r2 + dr[i];
                     int nc = now.c2 + dc[i];
@@ -97,20 +99,20 @@ public class Boj_17070 {
                         continue;
                     }
 
-                    if (i == 1) { // 대각선으로 가려면 세방향을 모두 확인해줘야함
+                    if (i == 1) { // 대각선 세방향 모두 확인
                         int cnt = canGo(now.r2, now.c2);
                         if (cnt == 3) { // 갈수 있을때만
                             if (map[nr][nc] == 0) {
                                 q.offer(new Pipe(now.r2, now.c2, nr, nc, 1));
                             }
                         }
-                    } else { // 가로/세로 방향으로 가려면 한방향만 확인해주면 됨
+                    } else { // 가로/세로 방향 한방향 확인
                         if (map[nr][nc] == 0) {
                             q.offer(new Pipe(now.r2, now.c2, nr, nc, i));
                         }
                     }
                 }
-            } else {
+            } else { // 파이프 방향 = 세로 상태
                 for (int i = 1; i < 3; i++) {
                     int nr = now.r2 + dr[i];
                     int nc = now.c2 + dc[i];
@@ -119,23 +121,21 @@ public class Boj_17070 {
                         continue;
                     }
 
-                    if (i == 1) { // 대각선으로 가려면 세방향을 모두 확인해줘야함
+                    if (i == 1) { // 대각선 세방향 모두 확인
                         int cnt = canGo(now.r2, now.c2);
                         if (cnt == 3) { // 갈수 있을때만
                             if (map[nr][nc] == 0) {
                                 q.offer(new Pipe(now.r2, now.c2, nr, nc, 1));
                             }
                         }
-                    } else { // 가로방향으로 가려면 한방향만 확인해주면 됨
+                    } else { // 세로 한방향 확인
                         if (map[nr][nc] == 0) {
                             q.offer(new Pipe(now.r2, now.c2, nr, nc, 2));
                         }
                     }
                 }
             }
-
         }
-        System.out.println(result);
     }
 
     private static int canGo(int r, int c) {
