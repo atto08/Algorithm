@@ -1,51 +1,53 @@
 package boj.bfs;
 
-import java.io.*;
-import java.util.*;
-
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.PriorityQueue;
+import java.util.StringTokenizer;
 /*
-최단 경로 - 골4 (다익스트라 대표유형)
-소요 시간: 1시간 초과
->> 도착지점을 설정하지 않으면 언제 탐색을 종료해야할지 기준을 정하지 못함
-다익스트라 유형 학습1 - 블로그 참조.
+최단경로 - 골4
+소요 시간: 24분
+
+다익스트라 대표유형 문제
+다익스트라 특징 -
+양의 간선이 존재(양수 가중치) - 음수는 X
+출발점이 존재O
  */
-class Pair implements Comparable<Pair> {
-    int node;
-    int cost;
-
-    public Pair(int node, int cost) {
-        this.node = node;
-        this.cost = cost;
-    }
-
-    @Override
-    public int compareTo(Pair o) {
-        return cost - o.cost;
-    }
-}
-
 public class Boj_1753 {
+    static class Node implements Comparable<Node> {
+        int n, d;
+
+        private Node(int n, int d) {
+            this.n = n;
+            this.d = d;
+        }
+
+        @Override
+        public int compareTo(Node other) {
+            return Integer.compare(this.d, other.d);
+        }
+    }
+
     static int V, E, K;
-    static List<Pair>[] graph;
-    static int[] dist; // 최단거리 배열
-    private static final int INF = Integer.MAX_VALUE;
+    static int[] dist;
+    static ArrayList<ArrayList<Node>> graph;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        StringTokenizer st = new StringTokenizer(br.readLine());
 
+        StringTokenizer st = new StringTokenizer(br.readLine());
         V = Integer.parseInt(st.nextToken());
         E = Integer.parseInt(st.nextToken());
-        K = Integer.parseInt(br.readLine());
-        graph = new ArrayList[V + 1];
-        dist = new int[V + 1];
 
-        Arrays.fill(dist, INF);
-
-        for (int i = 1; i <= V; i++) {
-            graph[i] = new ArrayList<>();
+        graph = new ArrayList<>();
+        for (int i = 0; i <= V; i++) {
+            graph.add(new ArrayList<>());
         }
+
+        K = Integer.parseInt(br.readLine());
 
         for (int i = 0; i < E; i++) {
             st = new StringTokenizer(br.readLine());
@@ -53,40 +55,38 @@ public class Boj_1753 {
             int v = Integer.parseInt(st.nextToken());
             int w = Integer.parseInt(st.nextToken());
 
-            graph[u].add(new Pair(v, w));
+            graph.get(u).add(new Node(v, w));
         }
 
-        dijkstra(K);
+        dijkstra();
+
+        StringBuilder sb = new StringBuilder();
         for (int i = 1; i <= V; i++) {
-            if (dist[i] == INF) {
-                bw.write("INF\n");
+            if (dist[i] < Integer.MAX_VALUE) {
+                sb.append(dist[i]);
             } else {
-                bw.write(dist[i] + "\n");
+                sb.append("INF");
             }
+            sb.append("\n");
         }
 
-        bw.flush();
-        br.close();
-        bw.close();
+        System.out.println(sb);
     }
 
-    private static void dijkstra(int start) {
-        PriorityQueue<Pair> queue = new PriorityQueue<>();
-        boolean[] check = new boolean[V + 1];
-        queue.add(new Pair(start, 0));
-        dist[start] = 0;
+    private static void dijkstra() {
+        PriorityQueue<Node> pq = new PriorityQueue<>();
+        pq.offer(new Node(K, 0));
+        dist = new int[V + 1];
+        Arrays.fill(dist, Integer.MAX_VALUE);
+        dist[K] = 0;
 
-        while (!queue.isEmpty()) {
-            Pair now = queue.poll();
-            int cur = now.node;
+        while (!pq.isEmpty()) {
+            Node current = pq.poll();
 
-            if (check[cur]) continue;
-            check[cur] = true;
-
-            for (Pair n : graph[cur]) {
-                if (dist[n.node] > dist[cur] + n.cost) {
-                    dist[n.node] = dist[cur] + n.cost;
-                    queue.add(new Pair(n.node, dist[n.node]));
+            for (Node adjNode : graph.get(current.n)) {
+                if (dist[adjNode.n] > dist[current.n] + adjNode.d) {
+                    dist[adjNode.n] = dist[current.n] + adjNode.d;
+                    pq.offer(new Node(adjNode.n, dist[adjNode.n]));
                 }
             }
         }
