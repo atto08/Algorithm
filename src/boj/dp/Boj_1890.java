@@ -24,7 +24,7 @@ public class Boj_1890 {
 
         int N = Integer.parseInt(br.readLine());
         int[][] map = new int[N][N];
-        int[][] dp = new int[N][N];
+        long[][] dp = new long[N][N]; // 경로는 최대 2^63 - 1
 
         for (int i = 0; i < N; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
