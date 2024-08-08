@@ -35,7 +35,7 @@ public class PlayAlone {
             }
         }
 
-        Collections.sort(scores, Collections.reverseOrder());
+        scores.sort(Collections.reverseOrder());
 
         if(scores.size() < 2) return 0;
 
