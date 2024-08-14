@@ -1,9 +1,6 @@
 package programmers;
 
 import java.util.HashMap;
-import java.util.Queue;
-import java.util.LinkedList;
-
 /*
 공원 산책 - level1
 소요 시간: 39분
@@ -21,7 +18,7 @@ public class Program_172928 {
         H = park.length;
         W = park[0].length();
         map = new char[H][W];
-        for (int i = 0; i < H; i++) map[i] = park[i].toCharArray();
+        for(int i = 0; i < H; i++) map[i] = park[i].toCharArray();
 
         dir.put('E', 0);
         dir.put('S', 1);
@@ -29,28 +26,25 @@ public class Program_172928 {
         dir.put('N', 3);
 
         int x = 0, y = 0;
-        for (int i = 0; i < H; i++) {
-            for (int j = 0; j < W; j++) {
-                if (map[i][j] == 'S') {
+        for(int i = 0; i < H; i++){
+            for(int j = 0; j < W; j++){
+                if(map[i][j] == 'S'){
                     x = i;
                     y = j;
                     break;
                 }
             }
         }
-
         return bfs(x, y, routes);
     }
 
-    private static int[] bfs(int x, int y, String[] routes) {
+    private static int[] bfs(int x, int y, String[] routes){
         int ex = x, ey = y;
-        Queue<Park> q = new LinkedList<>();
-        q.offer(new Park(x, y));
 
-        for (int i = 0; i < routes.length; i++) {
+        for (String route : routes) {
             int nx = ex, ny = ey;
 
-            String[] move = routes[i].split(" ");
+            String[] move = route.split(" ");
             char order = move[0].charAt(0);
             int cnt = Integer.parseInt(move[1]);
 
@@ -72,16 +66,6 @@ public class Program_172928 {
                 ey = ny;
             }
         }
-
         return new int[]{ex, ey};
-    }
-
-    static class Park {
-        int x, y;
-
-        private Park(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
     }
 }
