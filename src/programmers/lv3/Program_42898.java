@@ -1,10 +1,8 @@
 package programmers.lv3;
 
-import java.util.*;
-
 /*
 등굣길 - lv3
-소요시간 -
+소요시간 - 1시간 초과
 분류 - DP
 
 문제 설명:
