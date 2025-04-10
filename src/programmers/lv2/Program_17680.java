@@ -23,9 +23,15 @@ p.s
         -> 입력 순서 혹은 접근 순서 유지 가능
         -> LRU 캐시 쉽게 구현 가능
 - 즉 -> 반복문 사용 필요 X
+
+수정 --
+- 반복문 제거
+- 1) HashMap -> LinkedHashMap(캐시크기, loadFactor, 접근순서(True)) -> 캐시 (접근순서 유지)
+- 2) 접근순서가 유지된 캐시데이터(LinkedHashMap)에서 가장 오래된 캐시 데이터는 캐시사이즈 보다 클때 제거
 */
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class Program_17680 {
     public static int solution(int cacheSize, String[] cities) {
@@ -34,20 +40,13 @@ public class Program_17680 {
             return cities.length * 5;
         }
 
-        HashMap<String, Integer> map = new HashMap<>();
+        HashMap<String, Integer> map = new LinkedHashMap<>(cacheSize, 0.75f, true);
         for (int i = 0; i < cities.length; i++) {
             String city = cities[i].toLowerCase();
             if (!map.containsKey(city)) { // 캐시 존재 X
                 result += 5; // 5초 추가
                 if (map.size() >= cacheSize) { // 현재 캐시가 꽉찬 경우
-                    int first = 100001;
-                    String target = "";
-                    for (String key : map.keySet()) {
-                        if (first > map.get(key)) {
-                            first = map.get(key);
-                            target = key;
-                        }
-                    }
+                    String target = map.keySet().iterator().next();
                     map.remove(target);
                 }
                 map.put(city, i); // 새로운 캐시 데이터 추가
