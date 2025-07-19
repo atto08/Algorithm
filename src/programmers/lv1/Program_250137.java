@@ -34,7 +34,7 @@ p.s
 
 public class Program_250137 {
     public static int solution(int[] bandage, int health, int[][] attacks) {
-        int result = 0, hp = health, sec = 0; // 현재 체력, 시간(초)
+        int hp = health, sec = 0; // 현재 체력, 시간(초)
         int lastAttackTime = attacks[attacks.length - 1][0]; // 몬스터 마지막 공격시간(초)
 
         int aIdx = 0;   // 몬스터 공격 여부 인덱스
@@ -62,13 +62,9 @@ public class Program_250137 {
             sec++; // 시간++
         }
 
-        if (hp <= 0) {
-            result = -1;
-        } else {
-            result = hp;
-        }
+        if (hp <= 0) hp = -1;
 
-        return result;
+        return hp;
     }
 
     public static void main(String[] args) {
