@@ -45,9 +45,58 @@ public class Program_42883 {
         return sb.toString();
     }
 
+    /*
+    큰 수 만들기 - lv2
+    소요시간 - 38분
+    0 -> N-1 인덱스 순으로 뒷수와 비교하기
+
+    풀이설명:
+    예제 3번)
+    idx = 0
+    4 > 1 유지  4177252841 idx++ (idx = 1)
+    1 < 7 1제거 477252841  idx-- (idx = 0)    k--
+    4 < 7 4제거 77252841   idx   (idx = 0)    k-- (이미 0이라서)
+    7 = 7 유지  77252841   idx++ (idx = 1)
+    7 > 2 유지  77252841   idx++ (idx = 2)
+    2 < 5 2제거 7752841    idx-- (idx = 1)    k--
+    7 > 5 유지  7752841    idx++ (idx = 2)
+    5 > 2 유지  7752841    idx++ (idx = 3)
+    2 < 8 2제거 775841     idx-- (idx = 2)    k--
+
+    p.s
+    - 다시 풀어봤는데, 가장큰수를 만들수 있는 규칙을 찾는데 오래걸렸음.
+    - 풀이를 구현하는데는 오래걸리지 않았음.
+    - 이렇게 보니까 이전과 똑같이 풀이했다는게 신기하다.
+    - 그래도 제한시간내에 두문제 푼것에 박수. 짞짞.(근데, 둘다 풀어본 문제다.)
+*/
+    public static String solution2(String number, int k) {
+        StringBuilder sb = new StringBuilder().append(number);
+
+        int idx = 0;    // 확인하려는 인덱스와 뒷쪽.
+        // k == 0 이거나 number의 길이를 넘어가면 정지
+        while (k > 0 && idx < sb.length() - 1) {
+            if (sb.charAt(idx) < sb.charAt(idx + 1)) {
+                sb.deleteCharAt(idx);
+                k--;
+                if (idx > 0) idx--;
+            } else {
+                idx++;
+            }
+        }
+
+        if (k > 0) sb.deleteCharAt(idx);
+
+        return sb.toString();
+    }
+
     public static void main(String[] args) {
         System.out.println(solution("1924", 2));
         System.out.println(solution("1231234", 3));
         System.out.println(solution("4177252841", 4));
+        System.out.println(solution("10", 1));
+        System.out.println(solution2("1924", 2));
+        System.out.println(solution2("1231234", 3));
+        System.out.println(solution2("4177252841", 4));
+        System.out.println(solution2("10", 1));
     }
 }
