@@ -3,9 +3,10 @@ package programmers.lv2;
 import java.util.*;
 
 /*
-주차요금 - lv2
+주차 요금 계산 - lv2
 소요시간 - 1시간 초과
 
+풀이(1)
 풀이설명:
 - 입차와 출차를 우선순위 큐에서 관리
     - 입차와 동시에 출차에 있는 peek()이 같으면 출차기록 O
@@ -106,5 +107,86 @@ public class Program_92341 {
         System.out.println(Arrays.toString(solution(new int[]{180, 5000, 10, 600}, new String[]{"05:34 5961 IN", "06:00 0000 IN", "06:34 0000 OUT", "07:59 5961 OUT", "07:59 0148 IN", "18:59 0000 IN", "19:09 0148 OUT", "22:59 5961 IN", "23:00 5961 OUT"})));
         System.out.println(Arrays.toString(solution(new int[]{120, 0, 60, 591}, new String[]{"16:00 3961 IN", "16:00 0202 IN", "18:00 3961 OUT", "18:00 0202 OUT", "23:58 3961 IN"})));
         System.out.println(Arrays.toString(solution(new int[]{1, 461, 1, 10}, new String[]{"00:00 1234 IN"})));
+        System.out.println(Arrays.toString(solution2(new int[]{180, 5000, 10, 600}, new String[]{"05:34 5961 IN", "06:00 0000 IN", "06:34 0000 OUT", "07:59 5961 OUT", "07:59 0148 IN", "18:59 0000 IN", "19:09 0148 OUT", "22:59 5961 IN", "23:00 5961 OUT"})));
+        System.out.println(Arrays.toString(solution2(new int[]{120, 0, 60, 591}, new String[]{"16:00 3961 IN", "16:00 0202 IN", "18:00 3961 OUT", "18:00 0202 OUT", "23:58 3961 IN"})));
+        System.out.println(Arrays.toString(solution2(new int[]{1, 461, 1, 10}, new String[]{"00:00 1234 IN"})));
+    }
+
+
+    /*
+    2회차
+    소요시간 - 남은시간 34분 초과 + 60분(94분 소요)
+    풀이(2)
+    풀이설명:
+    1) 입출차 기록순으로 진행 - records
+    2) 입차 기록 - inRecord에 넣기
+    3) 출차 기록 - inRecord에 있는 입차기록 빼와서 계산하기
+    4) 출차기록 없는 남아잇는 inRecord(입차정보) 23:59으로 계산하기.
+
+    p.s
+    - 주요 패착원인은 일일 누적시간이라 생각하지 않고, 나갔다오면 리셋으로 계산해버렸다. -> 여기서부터 꼬였다고 생각한다.
+    - 제한시간내에 풀수 있었던 문제라고 생각한다.
+    - 34분 지나니까 집중력이 흐트려져서 더 오래걸렸다고 생각한다. 문제를 똑바로 읽자~~.
+    */
+
+    // records[i] = "HH:MM 차량번호 입출여부"
+    public static int[] solution2(int[] fees, String[] records) {
+
+        HashMap<String, Integer> inRecord = new HashMap<>();
+        HashMap<String, Integer> addTime = new HashMap<>();
+        for (String rc : records) {
+            String[] arr = rc.split(" ");
+
+            String[] t = arr[0].split(":");
+            int h = Integer.parseInt(t[0]), m = Integer.parseInt(t[1]);
+            int time = (60 * h) + m;
+
+            if (arr[2].equals("IN")) {
+                inRecord.put(arr[1], time);
+            } else {
+                int it = inRecord.get(arr[1]);  // in Time
+                inRecord.remove(arr[1]);
+                time -= it;     // 누적 시간
+                if (!addTime.containsKey(arr[1])) {
+                    addTime.put(arr[1], time);
+                } else {
+                    addTime.put(arr[1], addTime.get(arr[1]) + time);
+                }
+            }
+        }
+
+        // 출차기록 없는 차량
+        for (String carN : inRecord.keySet()) {
+            int time = ((60 * 23) + 59) - inRecord.get(carN);
+            if (addTime.containsKey(carN)) {
+                time += addTime.get(carN);
+                addTime.replace(carN, time);
+            } else {
+                addTime.put(carN, time);
+            }
+        }
+
+        List<String> numbers = new ArrayList<>(addTime.keySet());
+        Collections.sort(numbers);
+
+        int[] result = new int[numbers.size()];
+        for (int i = 0; i < result.length; i++) {
+            int time = addTime.get(numbers.get(i));
+            result[i] = calculateFee(fees, time);
+        }
+
+        return result;
+    }
+
+    // fees[0] = 기본시간(분), fees[1] = 기본요금(원), fees[2] = 단위시간(분), fees[3] = 단위요금(원)
+    private static int calculateFee(int[] fees, int time) {
+        int fee = fees[1];
+        time -= fees[0];
+        if (time > 0) {  // 기본 주차시간 초과 계산
+            fee += (time / fees[2]) * fees[3];
+            if (time % fees[2] > 0) fee += fees[3];  // 올림
+        }
+
+        return fee;
     }
 }
