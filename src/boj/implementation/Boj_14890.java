@@ -2,6 +2,7 @@ package boj.implementation;
 
 import java.io.*;
 import java.util.*;
+
 /*
 경사로 - 골3
 소요시간 - 80분
@@ -43,6 +44,10 @@ p.s
 - (3-1) 조건만 걸어두었고, 그렇기에 현재 위치보다 이전블록이 높이가 높은경우는 무시되는 코드가 되었다.
 - 20분이내에 빨리 잡아서 풀기는 했다.
 - 그치만 이전에 손으로 적어둔 조건에서 이를 캐치하지 못한 아쉬움과 하나의 메서드로 구분할 수 있었을텐데 하는 아쉬움이 남는다.
+
+++
+- 길(street)이 되는 1차원 배열로 확인했으면 됐다!.
+- 왜 방법이 시간안에 생각나지 않았을까? 생각할 수 있게 연습하자.
  */
 public class Boj_14890 {
 
@@ -69,242 +74,64 @@ public class Boj_14890 {
     private static void checkRoads() {
         // 가로 길 확인
         for (int i = 0; i < N; i++) {
-            canGoStreetW(i, 1);
+            int[] row = new int[N];
+            for (int j = 0; j < N; j++) {
+                row[j] = map[i][j];
+            }
+            if (canGoStreet(row)) result++;
         }
 
         // 세로 길 확인
         for (int j = 0; j < N; j++) {
-            canGoStreetH(1, j);
+            int[] col = new int[N];
+            for (int i = 0; i < N; i++) {
+                col[i] = map[i][j];
+            }
+            if (canGoStreet(col)) result++;
         }
 
         System.out.println(result);
     }
 
-    private static void canGoStreetH(int x, int y) {
-        boolean canGo = true;
-        boolean isPresent = true;
-        boolean isInstall = false;
-        boolean isEqualHeight = true;
-        // 경사로 설치여부
+    private static boolean canGoStreet(int[] street) {
         boolean[] visited = new boolean[N];
-        while (x < N) {
 
-            // 1. 앞 블록과 높이가 다른가?
-            if (map[x][y] == map[x - 1][y]) {
-                x++;
-                continue;
-            }
-            // 2. 높이 차이가 1인가?
-            if (Math.abs(map[x][y] - map[x - 1][y]) != 1) {
-                canGo = false;
-                break;
-            }
+        for (int i = 1; i < N; i++) {
+            // 1. 앞 블록과 높이가 같으면 통과
+            if (street[i] == street[i - 1]) continue;
 
-            // 현재위치가 앞쪽보다 크면
-            if (map[x][y] > map[x - 1][y]) {
-                // 3. 현재 위치에서 i-1 ~ i-L까지 존재하는가?
+            // 2. 높이 차이가 1이 아니면 불가능
+            if (Math.abs(street[i] - street[i - 1]) != 1) return false;
+
+            // 3. 오르막 경사로 (현재가 더 높음)
+            if (street[i] > street[i - 1]) {
+                // i-L ~ i-1 구간 확인
                 for (int l = 1; l <= L; l++) {
-                    if (x - l < 0 || x - l >= N) {
-                        isPresent = false;
-                        break;
-                    }
+                    if (i - l < 0) return false;  // 범위 벗어남
+                    if (visited[i - l]) return false;  // 이미 경사로 설치됨
+                    if (street[i - l] != street[i - 1]) return false;  // 높이 다름
                 }
-                if (!isPresent) {
-                    canGo = false;
-                    break;
-                }
-                // 4. 현재 위치에서 i-1 ~ i-L까지 경사로 설치가 되었나?
+                // 경사로 설치
                 for (int l = 1; l <= L; l++) {
-                    if (visited[x - l]) {
-                        isInstall = true;
-                        break;
-                    }
-                }
-                if (isInstall) {
-                    canGo = false;
-                    break;
-                }
-                // 5. 현재 위치에서 i-1 ~ i-L까지 높이가 전부 같은가?
-                int height = map[x - 1][y];
-                for (int l = 2; l <= L; l++) {
-                    if (height != map[x - l][y]) {
-                        isEqualHeight = false;
-                        break;
-                    }
-                }
-                if (!isEqualHeight) {
-                    canGo = false;
-                    break;
-                }
-                // 6. 갈 수 있으면 경사로 체크
-                for (int l = 1; l <= L; l++) {
-                    if (!visited[x - l]) {
-                        visited[x - l] = true;
-                    }
+                    visited[i - l] = true;
                 }
             }
-            // 현재위치가 앞쪽보다 작으면 현재위치 ~ +L만큼 확인
+            // 4. 내리막 경사로 (현재가 더 낮음)
             else {
-                // 3. 현재 위치에서 i-1 ~ i-L까지 존재하는가?
+                // i ~ i+L-1 구간 확인
                 for (int l = 0; l < L; l++) {
-                    if (x + l < 0 || x + l >= N) {
-                        isPresent = false;
-                        break;
-                    }
+                    if (i + l >= N) return false;  // 범위 벗어남
+                    if (visited[i + l]) return false;  // 이미 경사로 설치됨
+                    if (street[i + l] != street[i]) return false;  // 높이 다름
                 }
-                if (!isPresent) {
-                    canGo = false;
-                    break;
-                }
-                // 4. 현재 위치에서 i-1 ~ i-L까지 경사로 설치가 되었나?
+                // 경사로 설치
                 for (int l = 0; l < L; l++) {
-                    if (visited[x + l]) {
-                        isInstall = true;
-                        break;
-                    }
-                }
-                if (isInstall) {
-                    canGo = false;
-                    break;
-                }
-                // 5. 현재 위치에서 i-1 ~ i-L까지 높이가 전부 같은가?
-                int height = map[x][y];
-                for (int l = 1; l < L; l++) {
-                    if (height != map[x + l][y]) {
-                        isEqualHeight = false;
-                        break;
-                    }
-                }
-                if (!isEqualHeight) {
-                    canGo = false;
-                    break;
-                }
-                // 6. 갈 수 있으면 경사로 체크
-                for (int l = 0; l < L; l++) {
-                    if (!visited[x + l]) {
-                        visited[x + l] = true;
-                    }
+                    visited[i + l] = true;
                 }
             }
-            x++;
         }
 
-        if (x == N && canGo) {
-            result++;
-        }
-    }
-
-    private static void canGoStreetW(int x, int y) {
-        boolean canGo = true;
-        boolean isPresent = true;
-        boolean isInstall = false;
-        boolean isEqualHeight = true;
-        // 경사로 설치여부
-        boolean[] visited = new boolean[N];
-        while (y < N) {
-
-            // 1. 앞 블록과 높이가 다른가?
-            if (map[x][y] == map[x][y - 1]) {
-                y++;
-                continue;
-            }
-            // 2. 높이 차이가 1인가?
-            if (Math.abs(map[x][y] - map[x][y - 1]) != 1) {
-                canGo = false;
-                break;
-            }
-            // 현재위치가 앞쪽보다 크면
-            if (map[x][y] > map[x][y - 1]) {
-                // 3. 현재 위치에서 i-1 ~ i-L까지 존재하는가?
-                for (int l = 1; l <= L; l++) {
-                    if (y - l < 0 || y - l >= N) {
-                        isPresent = false;
-                        break;
-                    }
-                }
-                if (!isPresent) {
-                    canGo = false;
-                    break;
-                }
-                // 4. 현재 위치에서 i-1 ~ i-L까지 경사로 설치가 되었나?
-                for (int l = 1; l <= L; l++) {
-                    if (visited[y - l]) {
-                        isInstall = true;
-                        break;
-                    }
-                }
-                if (isInstall) {
-                    canGo = false;
-                    break;
-                }
-                // 5. 현재 위치에서 i-1 ~ i-L까지 높이가 전부 같은가?
-                int height = map[x][y - 1];
-                for (int l = 2; l <= L; l++) {
-                    if (height != map[x][y - l]) {
-                        isEqualHeight = false;
-                        break;
-                    }
-                }
-                if (!isEqualHeight) {
-                    canGo = false;
-                    break;
-                }
-                // 6. 갈 수 있으면 경사로 체크
-                for (int l = 1; l <= L; l++) {
-                    if (!visited[y - l]) {
-                        visited[y - l] = true;
-                    }
-                }
-            }
-            // 현재위치가 앞쪽보다 작으면 현재위치 ~ +L만큼 확인
-            else {
-                // 3. 현재 위치에서 i-1 ~ i-L까지 존재하는가?
-                for (int l = 0; l < L; l++) {
-                    if (y + l < 0 || y + l >= N) {
-                        isPresent = false;
-                        break;
-                    }
-                }
-                if (!isPresent) {
-                    canGo = false;
-                    break;
-                }
-                // 4. 현재 위치에서 i-1 ~ i-L까지 경사로 설치가 되었나?
-                for (int l = 0; l < L; l++) {
-                    if (visited[y + l]) {
-                        isInstall = true;
-                        break;
-                    }
-                }
-                if (isInstall) {
-                    canGo = false;
-                    break;
-                }
-                // 5. 현재 위치에서 i-1 ~ i-L까지 높이가 전부 같은가?
-                int height = map[x][y];
-                for (int l = 1; l < L; l++) {
-                    if (height != map[x][y + l]) {
-                        isEqualHeight = false;
-                        break;
-                    }
-                }
-                if (!isEqualHeight) {
-                    canGo = false;
-                    break;
-                }
-                // 6. 갈 수 있으면 경사로 체크
-                for (int l = 0; l < L; l++) {
-                    if (!visited[y + l]) {
-                        visited[y + l] = true;
-                    }
-                }
-            }
-            y++;
-        }
-
-        if (y == N && canGo) {
-            result++;
-        }
+        return true;
     }
 
     public static void main(String[] args) throws IOException {
