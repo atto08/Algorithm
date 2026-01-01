@@ -1,5 +1,6 @@
 package boj.greedy;
 
+import java.io.*;
 import java.util.*;
 
 /*
@@ -23,19 +24,21 @@ p.s
 - 최대한 자바의 장점을 살려보자 ~
  */
 public class Boj_2217 {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int N = sc.nextInt();
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int N = Integer.parseInt(br.readLine());
         int[] arr = new int[N];
-        for (int i = 0; i < N; i++) arr[i] = sc.nextInt();
+        for (int i = 0; i < N; i++) arr[i] = Integer.parseInt(br.readLine());
         Arrays.sort(arr);
 
         int max = arr[N - 1];
         for (int i = 0; i < N; i++) {
-            for (int j = i + 1; j <= N; j++) {
-                int num = arr[i] * (j - i);
-                max = Math.max(num, max);
-            }
+            // 가장 큰 경우만 구하면 됨
+            // 그렇기 때문에, i ~ (N-i)경우를 다 볼 필요가 없고 가장 큰 아래 경우만 체크하면 됨
+            // 시간 4.6s -> 256ms
+            // 메모리 110MB -> 26MB
+            int num = arr[i] * (N - i);
+            max = Math.max(max, num);
         }
         System.out.println(max);
     }
