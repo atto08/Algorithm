@@ -12,22 +12,21 @@ import java.util.*;
 
 [풀이설명]
 - 해시맵 자료구조를 사용해 부위별로 갯수 갖기
--
 
-ex)
-머리 - 캡,비니,선글라스
-몸 - 패딩,자켓
-신발 - 부츠,구두,운동화
-3+2+3 = 8
-6 + 6 + 9 = 21
-3*2*3 = 18
+p.s
+- 프로그래머스 - 의상(lv2)와 같은 문제
+- 8개월전에는 8분안에 풀었지만, 오늘 풀지못한 이유는 무엇일까.
+- 조합만들기 집착해버렸다.
+- 경우의 수만 구하면 되는 문제였음..
+- 문제의 의도를 제대로 파악해야 빠르고 효율적인 접근이 가능하다.
+- 열심히 연습해왔으니, 집중해서 판별할 수 있는 연습을 많이하자.
 
  */
 
 public class Boj_9375 {
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder sb = new StringBuilder();
+        StringBuilder result = new StringBuilder();
 
         int T = Integer.parseInt(br.readLine());
         while (T-- > 0) {
@@ -36,20 +35,20 @@ public class Boj_9375 {
 
             for (int i = 0; i < N; i++) {
                 StringTokenizer st = new StringTokenizer(br.readLine());
-                st.nextToken(); // item name (unused)
+                st.nextToken(); //
                 String type = st.nextToken();
                 cntByType.put(type, cntByType.getOrDefault(type, 0) + 1);
             }
 
             long ans = 1;
             for (int c : cntByType.values()) {
-                ans *= (c + 1); // wear one of them OR wear none
+                ans *= (c + 1);
             }
-            ans -= 1; // exclude "wear nothing"
+            ans -= 1;
 
-            sb.append(ans).append('\n');
+            result.append(ans).append('\n');
         }
 
-        System.out.print(sb);
+        System.out.print(result);
     }
 }
