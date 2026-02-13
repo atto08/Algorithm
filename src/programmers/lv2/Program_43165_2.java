@@ -10,7 +10,7 @@ p.s
 - 문제를 기억한 느낌은 아님.
 - 다만 조건을 읽고 재귀방식의 더하기뺄셈으로 깊이우선탐색이 가장 기본적인 풀이방법이라고 생각함.
  */
-public class Program2_43165 {
+public class Program_43165_2 {
     public static void main(String[] args) {
         System.out.println(solution(new int[]{1, 1, 1, 1, 1}, 3));
         System.out.println(solution(new int[]{4, 1, 2, 1}, 4));
